@@ -1,4 +1,3 @@
-// ===== Класс User =====
 class User {
   private _name: string;
   private _login: string;
@@ -65,7 +64,6 @@ class User {
   }
 }
 
-// ===== Класс SuperUser =====
 class SuperUser extends User {
   private _role: string;
   static count: number = 0;
@@ -87,8 +85,6 @@ class SuperUser extends User {
     console.log(`Name: ${this.name}, Login: ${this.login}, Role: ${this._role}`);
   }
 }
-
-// ===== Проверка =====
 const user1 = new User("Paul McCartney", "paul", "1234", 3);
 const user2 = new User("George Harrison", "george", "5678", 2);
 const user3 = new User("Richard Starkey", "ringo", "8523", 3);
