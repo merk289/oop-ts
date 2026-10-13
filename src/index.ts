@@ -1,116 +1,30 @@
-class User {
-  private _name: string;
-  private _login: string;
-  private _password: string;
-  private _grade: number;
+import { Library } from "./core/library";
+import { Book } from "./models/book";
+import { Magazine } from "./models/magazine";
+import { Reader } from "./models/reader";
 
-  static count: number = 0;
+const library = new Library();
+const book1 = new Book("Война и мир", "Л.Н. Толстой", 1869, 2, 1274);
+const book2 = new Book("Преступление и наказание", "Ф.М. Достоевский", 1866, 1, 671);
+const mag1 = new Magazine("Наука и жизнь", "Редакция", 2024, 3, 5);
+const mag2 = new Magazine("Мурзилка", "Редакция", 2023, 0, 12);
 
-  constructor(name: string, login: string, password: string, grade: number) {
-    this._name = name;
-    this._login = login;
-    this._password = password;
+library.addPublisher(book1);
+library.addPublisher(book2);
+library.addPublisher(mag1);
+library.addPublisher(mag2);
+library.printAll();
 
-    if (!Number.isInteger(grade) || grade <= 0) {
-      throw new Error("grade должен быть целым положительным числом");
-    }
-    this._grade = grade;
+const reader1 = new Reader("Иван", "Петров");
+const reader2 = new Reader("Мария", "Сидорова");
 
-    if (new.target === User) {
-      User.count++;
-    }
-  }
+book1.delivery(reader1);
+mag1.delivery(reader1);
+mag2.delivery(reader1);
+mag1.delivery(reader1);
+book2.delivery(reader1);
+mag2.delivery(reader1);
 
-  get name(): string {
-    return this._name;
-  }
-  set name(value: string) {
-    this._name = value;
-  }
-
-  get login(): string {
-    return this._login;
-  }
-  set login(_value: string) {
-    console.log("Невозможно изменить логин!");
-  }
-
-  set password(value: string) {
-    this._password = value;
-  }
-  get password(): string {
-    return "********";
-  }
-
-  get grade(): string {
-    return "Неизвестное свойство grade";
-  }
-  set grade(_value: number) {
-    console.log("Неизвестное свойство grade");
-  }
-
-  showInfo(): void {
-    console.log(`Name: ${this._name}, Login: ${this._login}`);
-  }
-
-  eq(other: User): boolean {
-    return this._grade === other._grade;
-  }
-  lt(other: User): boolean {
-    return this._grade < other._grade;
-  }
-  gt(other: User): boolean {
-    return this._grade > other._grade;
-  }
-}
-
-class SuperUser extends User {
-  private _role: string;
-  static count: number = 0;
-
-  constructor(name: string, login: string, password: string, role: string, grade: number) {
-    super(name, login, password, grade);
-    this._role = role;
-    SuperUser.count++;
-  }
-
-  get role(): string {
-    return this._role;
-  }
-  set role(value: string) {
-    this._role = value;
-  }
-
-  showInfo(): void {
-    console.log(`Name: ${this.name}, Login: ${this.login}, Role: ${this._role}`);
-  }
-}
-const user1 = new User("Paul McCartney", "paul", "1234", 3);
-const user2 = new User("George Harrison", "george", "5678", 2);
-const user3 = new User("Richard Starkey", "ringo", "8523", 3);
-const admin = new SuperUser("John Lennon", "john", "0000", "admin", 5);
-
-user1.showInfo();
-admin.showInfo();
-
-let users = User.count;
-let admins = SuperUser.count;
-
-console.log(`Всего обычных пользователей: ${users}`);
-console.log(`Всего супер-пользователей: ${admins}`);
-
-console.log(user1.lt(user2));
-console.log(admin.gt(user3));
-console.log(user1.eq(user3));
-
-user3.name = "Ringo Star";
-user1.password = "Pa$$w0rd";
-
-console.log(user3.name);
-console.log(user2.password);
-console.log(user2.login);
-
-user2.login = "geo";
-
-console.log(user3.grade);
-admin.grade = 10;
+book1.receive(reader1);
+library.removePublisher(mag2);
+library.printAll();
